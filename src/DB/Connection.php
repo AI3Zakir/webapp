@@ -11,6 +11,9 @@ namespace DB;
 
 class Connection
 {
+    /**
+     * Mysql Settings defined in config/db.php
+     */
     private $host = DATABASE_HOST;
     private $name = DATABASE_NAME;
     private $user = DATABASE_USER;

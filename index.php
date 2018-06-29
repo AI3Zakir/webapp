@@ -6,7 +6,15 @@
  * Time: 10:32 PM
  */
 
-require 'src/DB/Connection.php';
+
+/**
+ * @param $dir
+ * @param int $depth
+ */
+foreach (glob('src/*/*.php') as $filename)
+{
+    require $filename;
+}
 
 $dbConfigs = include 'config/db.php';
 
@@ -22,4 +30,6 @@ try {
     echo $e->getMessage();
 }
 
+$newsRepository = new Repository\NewsRepository($connection);
+$newsRepository->getAll();
 echo "Hello World";
