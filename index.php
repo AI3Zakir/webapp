@@ -6,7 +6,7 @@
  * Time: 10:32 PM
  */
 
-require 'class/DB/Connection.php';
+require 'src/DB/Connection.php';
 
 $dbConfigs = include 'config/db.php';
 
