@@ -6,7 +6,7 @@
  * Time: 1:49 AM
  */
 
-namespace Model;
+namespace WebApp\Model;
 
 
 class News

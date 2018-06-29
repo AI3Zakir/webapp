@@ -6,7 +6,7 @@
  * Time: 1:21 AM
  */
 
-namespace DB;
+namespace WebApp\DB;
 
 
 class Connection

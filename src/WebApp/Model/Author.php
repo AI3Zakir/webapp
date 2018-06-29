@@ -6,7 +6,7 @@
  * Time: 1:50 AM
  */
 
-namespace Model;
+namespace WebApp\Model;
 
 
 class Author

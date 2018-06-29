@@ -6,9 +6,9 @@
  * Time: 2:00 AM
  */
 
-namespace Repository;
+namespace WebApp\Repository;
 
-use Repository\Base\BaseRepository;
+use WebApp\Repository\Base\BaseRepository;
 
 class NewsRepository extends BaseRepository
 {

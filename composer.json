@@ -1,0 +1,8 @@
+{
+    "autoload": {
+        "psr-0": {"WebApp\\": "src/"}
+    },
+    "require": {
+        "twig/twig": "~2.0"
+    }
+}
