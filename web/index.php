@@ -13,10 +13,10 @@ use WebApp\DB\Connection;
  * @param $dir
  * @param int $depth
  */
-$loader = require 'vendor/autoload.php';
+$loader = require '../vendor/autoload.php';
 $loader->addPsr4('WebApp\\', __DIR__);
 
-$dbConfigs = include 'config/db.php';
+$dbConfigs = include '../config/db.php';
 
 define('DATABASE_HOST', $dbConfigs['host']);
 define('DATABASE_NAME', $dbConfigs['name']);
