@@ -1,0 +1,29 @@
+{% extends "base.html.twig" %}
+
+{% block title %}News{% endblock %}
+{% block head %}
+    {{ parent() }}
+{% endblock %}
+{% block content %}
+    <h1>News</h1>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Content</th>
+            <th>Author</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for newsEntity in news %}
+            <tr>
+                <td>{{ newsEntity.id }}</td>
+                <td>{{ newsEntity.title }}</td>
+                <td>{{ newsEntity.content }}</td>
+                <td>{{ newsEntity.author.firstName }} {{ newsEntity.author.lastName }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

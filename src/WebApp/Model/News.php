@@ -86,9 +86,9 @@ class News
     }
 
     /**
-     * @return Author
+     * @return Author|string
      */
-    public function getAuthor(): Author
+    public function getAuthor()
     {
         return $this->author;
     }

@@ -1,18 +1,20 @@
 {% extends "base.html.twig" %}
 
-{% block title %}Index{% endblock %}
+{% block title %}Home Page{% endblock %}
 {% block head %}
     {{ parent() }}
-    <style type="text/css">
-        .important { color: #336699; }
-    </style>
 {% endblock %}
 {% block content %}
-    {% for topic in news %}
-        <h1>{{ topic.title }}</h1>
-    {% endfor %}
-    <h1>Index</h1>
-    <p class="important">
-        Welcome on my awesome homepage.
-    </p>
+    <h1>HomePage</h1>
+    <div>
+        <ul>
+            <li>
+                <a href="/news">News</a>
+            </li>
+
+            <li>
+                <a href="/authors">Authors</a>
+            </li>
+        </ul>
+    </div>
 {% endblock %}

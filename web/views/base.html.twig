@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     {% block head %}
         <title>{% block title %}{% endblock %} - My Webpage</title>
     {% endblock %}
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
 </head>
 <body>
-<div id="content">{% block content %}{% endblock %}</div>
-<div id="footer">
+<div class="container">{% block content %}{% endblock %}</div>
+<footer class="container footer">
     {% block footer %}
-        &copy; Copyright 2011 by <a href="http://domain.invalid/">you</a>.
+        &copy; Copyright 2018 made by AI3Zakir.
     {% endblock %}
-</div>
+</footer>
 </body>
 </html>

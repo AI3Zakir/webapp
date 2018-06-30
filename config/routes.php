@@ -7,5 +7,5 @@
  */
 return [
     '/' => ['GET', 'HomeController', 'home'],
-    '/news' => ['GET', 'NewsController', 'getAllNews']
+    '/news' => ['GET', 'NewsController', 'showNews']
 ];
