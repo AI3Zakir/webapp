@@ -34,10 +34,10 @@ class Application
     {
         $controller = $this->router->findMatch();
 
-        if ($this->controller) {
+        if ($controller) {
 
         } else {
-            return 'No route';
+            echo 'No route';
         }
     }
 }

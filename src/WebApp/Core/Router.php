@@ -47,6 +47,8 @@ class Router
                 return $controller;
             }
         }
+
+        return false;
     }
 
     private function setUri(): void
