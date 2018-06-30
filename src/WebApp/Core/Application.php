@@ -35,7 +35,9 @@ class Application
         $controller = $this->router->findMatch();
 
         if ($controller) {
-
+            $controllerName = 'WebApp\\Controller\\' . $controller[Router::CONTROLLER];
+            $this->controller = new $controllerName();
+            $this->action = $controller[Router::ACTION];
         } else {
             echo 'No route';
         }
