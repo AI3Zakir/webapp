@@ -38,12 +38,13 @@ class Router
     {
         $this->routes = $routes;
         $this->setUri();
+        $this->setMethod();
     }
 
     public function findMatch()
     {
         foreach ($this->routes as $route => $controller) {
-            if ($route === $this->uri && $controller[self::METHOD]) {
+            if ($route === $this->uri && $controller[self::METHOD] === $this->method) {
                 return $controller;
             }
         }
@@ -53,7 +54,7 @@ class Router
 
     private function setUri(): void
     {
-        $this->uri = $_SERVER['REQUEST_URI'];
+        $this->uri = strtok($_SERVER['REQUEST_URI'],'?');
     }
 
     private function setMethod()

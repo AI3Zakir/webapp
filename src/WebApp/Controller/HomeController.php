@@ -9,10 +9,33 @@
 namespace WebApp\Controller;
 
 
-class HomeController
+use WebApp\Controller\Base\Controller;
+use WebApp\Repository\NewsRepository;
+
+class HomeController extends Controller
 {
-    public function home()
+
+    /**
+     * @var NewsRepository
+     */
+    private $newsRepository;
+
+    /**
+     * HomeController constructor.
+     * @throws \Exception
+     */
+    public function __construct()
     {
-        return "Hello World";
+        $this->newsRepository = new NewsRepository();
+    }
+
+    /**
+     * '/' - route
+     *
+     * @return array
+     */
+    public function home(): array
+    {
+        return ['news' => $this->newsRepository->getAll()];
     }
 }
