@@ -34,6 +34,9 @@ class NewsRepository extends BaseRepository
         }
     }
 
+    /**
+     * @return array
+     */
     public function getAll(): array
     {
         $result = parent::getAll();
@@ -48,4 +51,14 @@ class NewsRepository extends BaseRepository
         return $result;
     }
 
+    /**
+     * @param $id
+     * @return News
+     */
+    public function getById($id): News
+    {
+        $news = parent::getById($id);
+
+        return $news->setAuthor($this->authorRepository->getById($news->getAuthor()));
+    }
 }

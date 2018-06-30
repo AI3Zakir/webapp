@@ -8,6 +8,7 @@
 
 namespace WebApp\Repository\Base;
 
+use PDO;
 use WebApp\DB\Connection;
 
 abstract class BaseRepository
@@ -34,7 +35,7 @@ abstract class BaseRepository
         $query = 'SELECT * FROM ' . $this->getTableName();
         $result = $this->connection->query($query);
 
-        return $result->fetchAll(\PDO::FETCH_CLASS, $this->getClassName());
+        return $result->fetchAll(PDO::FETCH_CLASS, $this->getClassName());
     }
 
     /**
@@ -60,6 +61,29 @@ abstract class BaseRepository
         return $this->connection->exec($query);
     }
 
+    public function insert($data)
+    {
+        $tableFields = $this->getTableFields();
+        $query = 'INSERT INTO ' . $this->getTableName() . ' ( ' . implode(',', $tableFields) . ' ) ' .
+                 'VALUES (' . "'" . implode("','", $data) . "'" . ')';
+
+        return $this->connection->query($query);
+    }
+
+    public function update($data, $id)
+    {
+        $tableFields = $this->getTableFields();
+        $query = 'UPDATE ' . $this->getTableName() . ' SET ';
+        $set = [];
+        foreach ($tableFields as $field) {
+            $set []= $field . '=\'' . $data[$field] . '\'';
+        }
+
+        $query .= implode(', ',$set) . ' WHERE id = ' . $id;
+
+        return $this->connection->query($query);
+    }
+
     /**
      * @return string
      */
@@ -74,5 +98,17 @@ abstract class BaseRepository
     protected function getClassName(): string
     {
         return 'WebApp\\Model\\' . str_replace('Repository', '', end(explode('\\', get_called_class())));
+    }
+
+    /**
+     * @return array
+     */
+    protected function getTableFields(): array
+    {
+        $query = $this->connection->query('DESCRIBE ' . $this->getTableName());
+        $tableFields = $query->fetchAll(PDO::FETCH_COLUMN);
+        unset($tableFields[0]);
+
+        return $tableFields;
     }
 }

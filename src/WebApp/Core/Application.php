@@ -71,17 +71,23 @@ class Application
         if ($controller) {
             $controllerName = 'WebApp\\Controller\\' . $controller[Router::CONTROLLER];
             $this->controller = new $controllerName();
+            $this->controller->setMethod($controller[Router::METHOD]);
             $this->controller->setRequest($this->request);
             $this->action = $controller[Router::ACTION];
             $data = $this->controller->{$this->action}();
-            try {
-                echo $this->twig->render($this->getTemplate(), $data);
-            } catch (\Twig_Error_Loader $e) {
-                echo $e->getMessage();
-            } catch (\Twig_Error_Runtime $e) {
-                echo $e->getMessage();
-            } catch (\Twig_Error_Syntax $e) {
-                echo $e->getMessage();
+
+            if ($controller[Router::METHOD] !== 'GET') {
+                $this->router->redirect($data);
+            } else {
+                try {
+                    echo $this->twig->render($this->getTemplate(), $data);
+                } catch (\Twig_Error_Loader $e) {
+                    echo $e->getMessage();
+                } catch (\Twig_Error_Runtime $e) {
+                    echo $e->getMessage();
+                } catch (\Twig_Error_Syntax $e) {
+                    echo $e->getMessage();
+                }
             }
         } else {
             echo 'No route';

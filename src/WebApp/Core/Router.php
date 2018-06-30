@@ -41,9 +41,19 @@ class Router
         $this->setMethod();
     }
 
+    /**
+     * @return bool|mixed
+     */
     public function findMatch()
     {
         foreach ($this->routes as $route => $controller) {
+            if (\is_array($controller)) {
+                foreach ($controller as $subControllers) {
+                    if ($route === $this->uri && $subControllers[self::METHOD] === $this->method) {
+                        return $subControllers;
+                    }
+                }
+            }
             if ($route === $this->uri && $controller[self::METHOD] === $this->method) {
                 return $controller;
             }
@@ -52,12 +62,30 @@ class Router
         return false;
     }
 
+    /**
+     * TODO: Need proper solution
+     *
+     * Redirect To URI
+     *
+     * @param $redirectUri
+     */
+    public function redirect($redirectUri): void
+    {
+        header('location: ' . $redirectUri);
+    }
+
+    /**
+     * set uri from $_SERVER variable
+     */
     private function setUri(): void
     {
         $this->uri = strtok($_SERVER['REQUEST_URI'],'?');
     }
 
-    private function setMethod()
+    /**
+     * set method
+     */
+    private function setMethod(): void
     {
         $this->method = $_SERVER['REQUEST_METHOD'];
     }

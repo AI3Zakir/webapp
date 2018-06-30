@@ -1,0 +1,34 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Add News{% endblock %}
+{% block head %}
+    {{ parent() }}
+{% endblock %}
+{% block content %}
+    <h1>Add News</h1>
+    <form method="post">
+        <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="title-input">Title</span>
+            </div>
+            <input type="text" name="title" class="form-control" aria-label="title" aria-describedby="title-input" title="Title">
+        </div>
+        <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="content-input">Content</span>
+            </div>
+            <textarea name="content" class="form-control" aria-label="content" aria-describedby="content-input" title="Content"></textarea>
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="author">Author</label>
+            </div>
+            <select name="author" class="custom-select" id="author">
+                {% for author in authors %}
+                    <option value="{{ author.id }}">{{ author.firstName }} {{ author.lastName }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+{% endblock %}

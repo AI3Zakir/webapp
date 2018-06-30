@@ -21,6 +21,11 @@ abstract class Controller
     private $query;
 
     /**
+     * @var string
+     */
+    private $method;
+
+    /**
      * @return array
      */
     public function getRequest(): array
@@ -50,5 +55,21 @@ abstract class Controller
     public function setQuery(array $query): void
     {
         $this->query = $query;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMethod(): string
+    {
+        return $this->method;
+    }
+
+    /**
+     * @param string $method
+     */
+    public function setMethod(string $method): void
+    {
+        $this->method = $method;
     }
 }

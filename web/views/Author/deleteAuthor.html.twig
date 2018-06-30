@@ -1,0 +1,16 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Delete Author{% endblock %}
+{% block head %}
+    {{ parent() }}
+{% endblock %}
+{% block content %}
+    <h1>Delete News</h1>
+    <form method="post">
+        <div>
+            <h2>{{ author.firstName}}, {{ author.lastName }}</h2>
+        </div>
+        <button type="submit" class="btn btn-primary">Delete</button>
+        <a href="/authors" class="btn btn-primary">Cancel</a>
+    </form>
+{% endblock %}

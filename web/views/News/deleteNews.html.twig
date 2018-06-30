@@ -1,0 +1,17 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Delete News{% endblock %}
+{% block head %}
+    {{ parent() }}
+{% endblock %}
+{% block content %}
+    <h1>Delete News</h1>
+    <form method="post">
+        <div>
+            <h2>{{ news.title }}</h2>
+            <span>{{ news.content }}</span>
+        </div>
+        <button type="submit" class="btn btn-primary">Delete</button>
+        <a href="/news" class="btn btn-primary">Cancel</a>
+    </form>
+{% endblock %}

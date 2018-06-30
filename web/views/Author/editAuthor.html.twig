@@ -1,0 +1,24 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Edit News{% endblock %}
+{% block head %}
+    {{ parent() }}
+{% endblock %}
+{% block content %}
+    <h1>Edit News</h1>
+    <form method="post">
+        <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="first-name-input">First Name</span>
+            </div>
+            <input type="text" name="firstName" value="{{ author.firstName }}" class="form-control" aria-label="title" aria-describedby="first-name-input" title="First Name">
+        </div>
+        <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="last-name-input">Last Name</span>
+            </div>
+            <input type="text" name="lastName" value="{{ author.lastName }}" class="form-control" aria-label="title" aria-describedby="last-name-input" title="Last Name">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+{% endblock %}

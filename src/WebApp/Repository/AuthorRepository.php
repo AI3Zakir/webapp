@@ -12,5 +12,4 @@ use WebApp\Repository\Base\BaseRepository;
 
 class AuthorRepository extends BaseRepository
 {
-
 }
