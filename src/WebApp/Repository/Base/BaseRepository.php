@@ -8,6 +8,8 @@
 
 namespace WebApp\Repository\Base;
 
+use WebApp\DB\Connection;
+
 abstract class BaseRepository
 {
     /**
@@ -17,11 +19,11 @@ abstract class BaseRepository
 
     /**
      * BaseRepository constructor.
-     * @param $connection
+     * @throws \Exception
      */
-    public function __construct($connection)
+    public function __construct()
     {
-        $this->connection = $connection;
+        $this->connection = Connection::getInstance()->getConnection();
     }
 
     /**
