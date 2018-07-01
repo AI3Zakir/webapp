@@ -13,6 +13,10 @@ use ReflectionClass;
 use ReflectionProperty;
 use WebApp\DB\Connection;
 
+/**
+ * Class BaseRepository
+ * @package WebApp\Repository\Base
+ */
 abstract class BaseRepository
 {
     /**

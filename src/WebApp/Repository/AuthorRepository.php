@@ -10,6 +10,10 @@ namespace WebApp\Repository;
 
 use WebApp\Repository\Base\BaseRepository;
 
+/**
+ * Class AuthorRepository
+ * @package WebApp\Repository
+ */
 class AuthorRepository extends BaseRepository
 {
 }

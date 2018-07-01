@@ -9,6 +9,10 @@
 namespace WebApp\Model;
 
 
+/**
+ * Class News
+ * @package WebApp\Model
+ */
 class News
 {
     /**

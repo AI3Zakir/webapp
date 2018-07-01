@@ -15,6 +15,10 @@ use WebApp\Response\Base\ResponseInterface;
 use WebApp\Response\RedirectResponse;
 use WebApp\Response\ViewResponse;
 
+/**
+ * Class NewsController
+ * @package WebApp\Controller
+ */
 class NewsController extends Controller
 {
     /**

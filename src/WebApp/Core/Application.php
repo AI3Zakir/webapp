@@ -13,6 +13,10 @@ use Twig_Extension_Debug;
 use WebApp\Controller\Base\Controller;
 use WebApp\Response\Base\ResponseInterface;
 
+/**
+ * Class Application
+ * @package WebApp\Core
+ */
 class Application
 {
     /**
@@ -102,7 +106,10 @@ class Application
         $this->request = $_REQUEST;
     }
 
-    private function setQuery()
+    /**
+     *
+     */
+    private function setQuery(): void
     {
         $this->query = $_GET;
     }

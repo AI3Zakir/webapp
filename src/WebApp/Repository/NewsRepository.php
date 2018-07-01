@@ -11,6 +11,10 @@ namespace WebApp\Repository;
 use WebApp\Model\News;
 use WebApp\Repository\Base\BaseRepository;
 
+/**
+ * Class NewsRepository
+ * @package WebApp\Repository
+ */
 class NewsRepository extends BaseRepository
 {
     /**

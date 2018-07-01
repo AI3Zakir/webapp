@@ -8,7 +8,10 @@
 
 namespace WebApp\Model;
 
-
+/**
+ * Class Author
+ * @package WebApp\Model
+ */
 class Author
 {
     /**

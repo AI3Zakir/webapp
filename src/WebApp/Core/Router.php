@@ -8,7 +8,10 @@
 
 namespace WebApp\Core;
 
-
+/**
+ * Class Router
+ * @package WebApp\Core
+ */
 class Router
 {
     public const METHOD = 0;

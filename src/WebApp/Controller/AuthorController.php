@@ -14,6 +14,10 @@ use WebApp\Response\Base\ResponseInterface;
 use WebApp\Response\RedirectResponse;
 use WebApp\Response\ViewResponse;
 
+/**
+ * Class AuthorController
+ * @package WebApp\Controller
+ */
 class AuthorController extends Controller
 {
     /**
