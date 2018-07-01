@@ -9,6 +9,8 @@
 namespace WebApp\Repository\Base;
 
 use PDO;
+use ReflectionClass;
+use ReflectionProperty;
 use WebApp\DB\Connection;
 
 abstract class BaseRepository
@@ -44,10 +46,12 @@ abstract class BaseRepository
      */
     public function getById($id)
     {
-        $query = 'SELECT * FROM ' . $this->getTableName() . ' WHERE id = ' . $id;
-        $result = $this->connection->query($query);
+        $query = 'SELECT * FROM ' . $this->getTableName() . ' WHERE id = :id';
+        $statement = $this->connection->prepare($query);
+        $statement->bindValue(':id', $id, PDO::PARAM_INT);
+        $result = $statement->execute();
 
-        return $result ? $result->fetchObject($this->getClassName()) : null;
+        return $result ? $statement->fetchObject($this->getClassName()) : null;
     }
 
     /**
@@ -56,32 +60,54 @@ abstract class BaseRepository
      */
     public function deleteById($id)
     {
-        $query = 'DELETE FROM ' . $this->getTableName() . ' WHERE id = ' . $id;
+        $query = 'DELETE FROM ' . $this->getTableName() . ' WHERE id = :id';
+        $statement = $this->connection->prepare($query);
+        $statement->bindValue(':id', $id, PDO::PARAM_INT);
 
-        return $this->connection->exec($query);
+        return $statement->execute();
     }
 
-    public function insert($data)
+    /**
+     * @param $data
+     * @return bool
+     */
+    public function insert($data): bool
     {
-        $tableFields = $this->getTableFields();
+        $tableFields = $this->getModelFields();
         $query = 'INSERT INTO ' . $this->getTableName() . ' ( ' . implode(',', $tableFields) . ' ) ' .
-                 'VALUES (' . "'" . implode("','", $data) . "'" . ')';
+                 'VALUES (' . implode(',', preg_filter('/^/', ':', $tableFields) ). ')';
 
-        return $this->connection->query($query);
+
+        $statement = $this->connection->prepare($query);
+        foreach ($tableFields as $tableField) {
+            $statement->bindValue(':' . $tableField, $data[$tableField]);
+        }
+
+        return $statement->execute();
     }
 
-    public function update($data, $id)
+    /**
+     * @param $data
+     * @param $id
+     * @return bool
+     */
+    public function update($data, $id): bool
     {
-        $tableFields = $this->getTableFields();
+        $tableFields = $this->getModelFields();
         $query = 'UPDATE ' . $this->getTableName() . ' SET ';
         $set = [];
         foreach ($tableFields as $field) {
-            $set []= $field . '=\'' . $data[$field] . '\'';
+            $set []= $field . '=:' . $field;
         }
 
-        $query .= implode(', ',$set) . ' WHERE id = ' . $id;
+        $query .= implode(', ',$set) . ' WHERE id = :id';
+        $statement = $this->connection->prepare($query);
+        foreach ($tableFields as $tableField) {
+            $statement->bindValue(':' . $tableField, $data[$tableField]);
+        }
+        $statement->bindValue(':id', $id);
 
-        return $this->connection->query($query);
+        return $statement->execute();
     }
 
     /**
@@ -97,18 +123,29 @@ abstract class BaseRepository
      */
     protected function getClassName(): string
     {
-        return 'WebApp\\Model\\' . str_replace('Repository', '', end(explode('\\', get_called_class())));
+        $repository = explode('\\', get_called_class());
+
+        return 'WebApp\\Model\\' . str_replace('Repository', '', end($repository));
     }
 
     /**
      * @return array
      */
-    protected function getTableFields(): array
+    protected function getModelFields(): array
     {
-        $query = $this->connection->query('DESCRIBE ' . $this->getTableName());
-        $tableFields = $query->fetchAll(PDO::FETCH_COLUMN);
-        unset($tableFields[0]);
+        try {
+            $reflection = new ReflectionClass($this->getClassName());
+        } catch (\ReflectionException $e) {
+            echo $e->getMessage();
+        }
+        $reflectionProperties = $reflection->getProperties(ReflectionProperty::IS_PRIVATE);
+        $fields = [];
+        foreach ($reflectionProperties as $property) {
+            if ($property->name !== 'id') {
+                $fields[] = $property->name;
+            }
+        }
 
-        return $tableFields;
+        return $fields;
     }
 }

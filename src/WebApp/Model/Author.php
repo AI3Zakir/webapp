@@ -27,11 +27,6 @@ class Author
     private $lastName;
 
     /**
-     * @var News[]
-     */
-    private $news;
-
-    /**
      * @return string
      */
     public function getId(): string
@@ -82,24 +77,6 @@ class Author
     public function setLastName(string $lastName): Author
     {
         $this->lastName = $lastName;
-        return $this;
-    }
-
-    /**
-     * @return News[]
-     */
-    public function getNews(): array
-    {
-        return $this->news;
-    }
-
-    /**
-     * @param News[] $news
-     * @return Author
-     */
-    public function setNews(array $news): Author
-    {
-        $this->news = $news;
         return $this;
     }
 }
