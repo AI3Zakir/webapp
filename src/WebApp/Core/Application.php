@@ -11,6 +11,7 @@ namespace WebApp\Core;
 use http\Env\Request;
 use Twig_Extension_Debug;
 use WebApp\Controller\Base\Controller;
+use WebApp\Response\Base\ResponseInterface;
 
 class Application
 {
@@ -54,7 +55,7 @@ class Application
         $this->setRequest();
         $this->setQuery();
 
-        $loader = new \Twig_Loader_Filesystem('views/');
+        $loader = new \Twig_Loader_Filesystem('../src/WebApp/views/');
         $this->twig = new \Twig_Environment($loader, [
             'debug' => true,
             'cache' => 'cache'
@@ -75,21 +76,11 @@ class Application
             $this->controller->setMethod($controller[Router::METHOD]);
             $this->controller->setRequest($this->request);
             $this->action = $controller[Router::ACTION];
-            $data = $this->controller->{$this->action}();
 
-            if ($controller[Router::METHOD] !== 'GET') {
-                $this->router->redirect($data);
-            } else {
-                try {
-                    echo $this->twig->render($this->getTemplate(), $data);
-                } catch (\Twig_Error_Loader $e) {
-                    echo $e->getMessage();
-                } catch (\Twig_Error_Runtime $e) {
-                    echo $e->getMessage();
-                } catch (\Twig_Error_Syntax $e) {
-                    echo $e->getMessage();
-                }
-            }
+            /** @var $response ResponseInterface $respnse */
+            $response = $this->controller->{$this->action}();
+
+            $response->process();
         } else {
             echo 'No route';
         }

@@ -63,18 +63,6 @@ class Router
     }
 
     /**
-     * TODO: Need proper solution
-     *
-     * Redirect To URI
-     *
-     * @param $redirectUri
-     */
-    public function redirect($redirectUri): void
-    {
-        header('location: ' . $redirectUri);
-    }
-
-    /**
      * set uri from $_SERVER variable
      */
     private function setUri(): void

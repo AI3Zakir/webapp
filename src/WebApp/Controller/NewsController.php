@@ -11,6 +11,9 @@ namespace WebApp\Controller;
 use WebApp\Controller\Base\Controller;
 use WebApp\Repository\AuthorRepository;
 use WebApp\Repository\NewsRepository;
+use WebApp\Response\Base\ResponseInterface;
+use WebApp\Response\RedirectResponse;
+use WebApp\Response\ViewResponse;
 
 class NewsController extends Controller
 {
@@ -23,8 +26,9 @@ class NewsController extends Controller
      * @var AuthorRepository
      */
     private $authorRepository;
+
     /**
-     * HomeController constructor.
+     * NewsController constructor.
      * @throws \Exception
      */
     public function __construct()
@@ -36,78 +40,78 @@ class NewsController extends Controller
     /**
      * GET '/news/' - route
      *
-     * @return array
+     * @return ResponseInterface
      */
-    public function showNews(): array
+    public function showNews(): ResponseInterface
     {
-        return ['news' => $this->newsRepository->getAll()];
+        return new ViewResponse('News/showNews.html.twig', ['news' => $this->newsRepository->getAll()]);
     }
 
     /**
      * GET /news/add/ - route
      *
-     * @return array
+     * @return ResponseInterface
      */
-    public function addNews(): array
+    public function addNews(): ResponseInterface
     {
-        return ['authors' => $this->authorRepository->getAll()];
+        return new ViewResponse('News/addNews.html.twig', ['authors' => $this->authorRepository->getAll()]);
     }
 
     /**
      * POST /news/add/ - route
      *
-     * Redirection
-     * @return string
+     * @return ResponseInterface
      */
-    public function postNews(): string
+    public function postNews(): ResponseInterface
     {
-        if (isset($this->getRequest()['id'])) {
-            $id = $this->getRequest()['id'];
-            $news = $this->newsRepository->getById($id);
-            if($news) {
-                $result = $this->newsRepository->update($this->getRequest(), $id);
-            }
-        } else {
+        $id = $this->getRequest()['id'] ?? null;
+
+        $news = $this->newsRepository->getById($id);
+
+        if (!$news) {
             $result = $this->newsRepository->insert($this->getRequest());
-        }
-        if ($result) {
-            return '/news';
+
+            return $result ? new RedirectResponse('/news') : new RedirectResponse('/news/add');
         }
 
-        return '/news/add';
+        $result = $this->newsRepository->update($this->getRequest(), $id);
+
+        return $result ? new RedirectResponse('/news') : new RedirectResponse('/news/edit?id='.$id);
     }
 
     /**
      * GET /news/add/ - route
      *
-     * @return array
+     * @return ResponseInterface
      */
-    public function editNews(): array
+    public function editNews(): ResponseInterface
     {
         $news = $this->newsRepository->getById($this->getRequest()['id']);
 
-        return ['authors' => $this->authorRepository->getAll(), 'news' => $news];
+        return new ViewResponse('News/editNews.html.twig', ['authors' => $this->authorRepository->getAll(), 'news' => $news]);
     }
 
     /**
      * DELETE /news/delete/ - route
      *
-     * @return string|array
+     * @return ResponseInterface
      */
-    public function deleteNews()
+    public function deleteNews(): ResponseInterface
     {
-        if (isset($this->getRequest()['id'])) {
-            $id = $this->getRequest()['id'];
-            $news = $this->newsRepository->getById($id);
-        }
-        if (isset($id) && 'POST' === $this->getMethod()) {
-            if(isset($news)) {
-                $this->newsRepository->deleteById($id);
-            }
-            return '/news';
+        $id = $this->getRequest()['id'] ?? null;
+
+        $news = $this->newsRepository->getById($id);
+
+        if(!$news) {
+            return new RedirectResponse('/news');
         }
 
-        return ['news' => $news];
+        if ('POST' === $this->getMethod()) {
+            $this->newsRepository->deleteById($id);
 
+            return new RedirectResponse('/news');
+        }
+
+        return new ViewResponse('News/deleteNews.html.twig', ['news' => $news]);
     }
 }

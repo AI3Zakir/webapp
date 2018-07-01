@@ -53,12 +53,12 @@ class NewsRepository extends BaseRepository
 
     /**
      * @param $id
-     * @return News
+     * @return mixed
      */
-    public function getById($id): News
+    public function getById($id)
     {
         $news = parent::getById($id);
 
-        return $news->setAuthor($this->authorRepository->getById($news->getAuthor()));
+        return $news ? $news->setAuthor($this->authorRepository->getById($news->getAuthor())) : null;
     }
 }

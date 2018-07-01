@@ -9,6 +9,10 @@
 namespace WebApp\DB;
 
 
+/**
+ * Class Connection
+ * @package WebApp\DB
+ */
 class Connection
 {
     /**
@@ -29,8 +33,12 @@ class Connection
      */
     public function getConnection(): \PDO
     {
+        if ($this->connection) {
+            return $this->connection;
+        }
         try {
             $this->connection = new \PDO("mysql:host=$this->host;dbname=$this->name", $this->user, $this->pass);
+
             return $this->connection;
         } catch (\PDOException $exception) {
             throw  $exception;

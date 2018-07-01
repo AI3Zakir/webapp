@@ -47,7 +47,7 @@ abstract class BaseRepository
         $query = 'SELECT * FROM ' . $this->getTableName() . ' WHERE id = ' . $id;
         $result = $this->connection->query($query);
 
-        return $result->fetchObject($this->getClassName());
+        return $result ? $result->fetchObject($this->getClassName()) : null;
     }
 
     /**

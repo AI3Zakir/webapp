@@ -11,31 +11,23 @@ namespace WebApp\Controller;
 
 use WebApp\Controller\Base\Controller;
 use WebApp\Repository\NewsRepository;
+use WebApp\Response\Base\ResponseInterface;
+use WebApp\Response\ViewResponse;
 
+/**
+ * Class HomeController
+ * @package WebApp\Controller
+ */
 class HomeController extends Controller
 {
 
     /**
-     * @var NewsRepository
-     */
-    private $newsRepository;
-
-    /**
-     * HomeController constructor.
-     * @throws \Exception
-     */
-    public function __construct()
-    {
-        $this->newsRepository = new NewsRepository();
-    }
-
-    /**
      * '/' - route
      *
-     * @return array
+     * @return ResponseInterface
      */
-    public function home(): array
+    public function home(): ResponseInterface
     {
-        return ['news' => $this->newsRepository->getAll()];
+        return new ViewResponse('Home/home.html.twig');
     }
 }

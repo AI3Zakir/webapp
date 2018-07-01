@@ -10,6 +10,9 @@ namespace WebApp\Controller;
 
 use WebApp\Controller\Base\Controller;
 use WebApp\Repository\AuthorRepository;
+use WebApp\Response\Base\ResponseInterface;
+use WebApp\Response\RedirectResponse;
+use WebApp\Response\ViewResponse;
 
 class AuthorController extends Controller
 {
@@ -17,8 +20,9 @@ class AuthorController extends Controller
      * @var AuthorRepository
      */
     private $authorRepository;
+
     /**
-     * HomeController constructor.
+     * AuthorController constructor.
      * @throws \Exception
      */
     public function __construct()
@@ -29,78 +33,78 @@ class AuthorController extends Controller
     /**
      * GET '/author/' - route
      *
-     * @return array
+     * @return ResponseInterface
      */
-    public function showAuthors(): array
+    public function showAuthors(): ResponseInterface
     {
-        return ['authors' => $this->authorRepository->getAll()];
+        return new ViewResponse('Author/showAuthors.html.twig', ['authors' => $this->authorRepository->getAll()]);
     }
 
     /**
      * GET /author/add/ - route
      *
-     * @return array
+     * @return ResponseInterface
      */
-    public function addAuthor(): array
+    public function addAuthor(): ResponseInterface
     {
-        return ['author' => $this->authorRepository->getAll()];
+        return new ViewResponse('Author/addAuthor.html.twig');
     }
 
     /**
      * POST /author/add/ - route
      *
-     * Redirection
-     * @return string
+     * @return ResponseInterface
      */
-    public function postAuthor(): string
+    public function postAuthor(): ResponseInterface
     {
-        if (isset($this->getRequest()['id'])) {
-            $id = $this->getRequest()['id'];
-            $author = $this->authorRepository->getById($id);
-            if($author) {
-                $result = $this->authorRepository->update($this->getRequest(), $id);
-            }
-        } else {
+        $id = $this->getRequest()['id'] ?? null;
+
+        $author = $this->authorRepository->getById($id);
+
+        if (!$author) {
             $result = $this->authorRepository->insert($this->getRequest());
-        }
-        if ($result) {
-            return '/authors';
+
+            return $result ? new RedirectResponse('/authors') : new RedirectResponse('/author/add');
         }
 
-        return '/author/add';
+        $result = $this->authorRepository->update($this->getRequest(), $id);
+
+        return $result ? new RedirectResponse('/authors') : new RedirectResponse('/author/edit?id='.$id);
     }
 
     /**
      * GET /author/add/ - route
      *
-     * @return array
+     * @return ResponseInterface
      */
-    public function editAuthor(): array
+    public function editAuthor(): ResponseInterface
     {
         $author = $this->authorRepository->getById($this->getRequest()['id']);
 
-        return ['author' => $author];
+        return new ViewResponse('Author/editAuthor.html.twig', ['author' => $author]);
     }
 
     /**
      * DELETE /author/delete/ - route
      *
-     * @return string|array
+     * @return ResponseInterface
      */
-    public function deleteAuthor()
+    public function deleteAuthor(): ResponseInterface
     {
-        if (isset($this->getRequest()['id'])) {
-            $id = $this->getRequest()['id'];
-            $author = $this->authorRepository->getById($id);
-        }
-        if (isset($id) && 'POST' === $this->getMethod()) {
-            if(isset($author)) {
-                $this->authorRepository->deleteById($id);
-            }
-            return '/authors';
+        $id = $this->getRequest()['id'] ?? null;
+
+        $author = $this->authorRepository->getById($id);
+
+        if(!$author) {
+            return new RedirectResponse('/authors');
         }
 
-        return ['author' => $author];
+        if ('POST' === $this->getMethod()) {
+            $this->authorRepository->deleteById($id);
 
+            return new RedirectResponse('/authors');
+        }
+
+        return new ViewResponse('Author/deleteAuthor.html.twig', ['author' => $author]);
     }
 }
